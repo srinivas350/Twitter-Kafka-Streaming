@@ -16,13 +16,12 @@ import org.springframework.stereotype.Service;
 import com.google.common.collect.Lists;
 import com.twitter.hbc.ClientBuilder;
 import com.twitter.hbc.core.Client;
-import com.twitter.hbc.core.Constants;
 import com.twitter.hbc.core.Hosts;
 import com.twitter.hbc.core.HttpHosts;
 import com.twitter.hbc.core.endpoint.StatusesFilterEndpoint;
 import com.twitter.hbc.core.processor.StringDelimitedProcessor;
 import com.twitter.hbc.httpclient.auth.Authentication;
-import com.twitter.hbc.httpclient.auth.OAuth1;  
+import com.twitter.hbc.httpclient.auth.OAuth1;
 
 @Service
 public class TwitterProducer {
@@ -65,19 +64,17 @@ public class TwitterProducer {
 	  
 	        Hosts hosebirdHosts = new HttpHosts(stream_host);  
 	        StatusesFilterEndpoint hosebirdEndpoint = new StatusesFilterEndpoint();  
-	        List<String> terms = Lists.newArrayList("Army");
+	        List<String> terms = Lists.newArrayList("Army","Cricket");
 	        hosebirdEndpoint.trackTerms(terms);  
-	        Authentication hosebirdAuth = new OAuth1(consumerKey,consumerSecret,token,secret);  
-	        ClientBuilder builder = new ClientBuilder()  
-	                .name("Hosebird-Client-01")
-	                .hosts(hosebirdHosts)  
-	                .authentication(hosebirdAuth)  
-	                .endpoint(hosebirdEndpoint)  
-	                .processor(new StringDelimitedProcessor(msgQueue));  
-	  
-	  
-	        Client hosebirdClient = builder.build();  
-	        return hosebirdClient;
+	        Authentication hosebirdAuth=new OAuth1(consumerKey, consumerKey, consumerKey, consumerKey);
+	        Client client = new ClientBuilder()
+	                .name("SmartCode-Client-01")
+	                .hosts(hosebirdHosts)
+	                .endpoint(hosebirdEndpoint)
+	                .authentication(hosebirdAuth)
+	                .processor(new StringDelimitedProcessor(msgQueue))
+	                .build();  
+	        return client;
 	 }  
 	    public KafkaProducer<String,String> createKafkaProducer(){      
 	        String bootstrapServers="127.0.0.1:9092";  
